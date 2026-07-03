@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IA Football Predictor 2026</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #0f172a;
+    color: white;
+}
+
+header {
+    background: linear-gradient(90deg,#1e3a8a,#0ea5e9);
+    padding: 20px;
+    text-align: center;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: #111827;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    background: #0ea5e9;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0284c7;
+}
+
+.result {
+    margin-top: 10px;
+    padding: 10px;
+    background: #0b1220;
+    border-radius: 8px;
+}
+
+.small {
+    font-size: 12px;
+    opacity: 0.8;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>⚽ IA Football Predictor 2026</h1>
+    <p>Fusion : Expert System • Symbolic AI • CBR • ML • Neural Net (Simulation pédagogique)</p>
+</header>
+
+<div class="container">
+
+    <!-- INPUT -->
+    <div class="card">
+        <h2>Entrée Match</h2>
+
+        <input id="teamA" placeholder="Équipe A (ex: France)" />
+        <input id="teamB" placeholder="Équipe B (ex: Brésil)" />
+
+        <button onclick="predict()">Générer pronostic IA</button>
+
+        <div class="result" id="output"></div>
+    </div>
+
+    <!-- EXPLANATION -->
+    <div class="card">
+        <h2>Modules IA</h2>
+
+        <button onclick="toggle('expert')">Système Expert</button>
+        <button onclick="toggle('symbolic')">Raisonnement Symbolique</button>
+        <button onclick="toggle('cbr')">Case-Based Reasoning</button>
+        <button onclick="toggle('ml')">Machine Learning</button>
+        <button onclick="toggle('nn')">Réseau de Neurones</button>
+
+        <div class="result small" id="panel">
+            Sélectionnez un module pour voir son fonctionnement.
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+// ------------------------------
+// BASE DATA SIMULÉE
+// ------------------------------
+const teamStrength = {
+    "france": 90,
+    "brésil": 92,
+    "argentine": 88,
+    "allemagne": 85,
+    "espagne": 86,
+    "angleterre": 87,
+    "portugal": 84,
+    "maroc": 80,
+    "senegal": 79
+};
+
+// ------------------------------
+// 1. SYSTEME EXPERT
+// ------------------------------
+function expertSystem(a,b){
+    let A = teamStrength[a.toLowerCase()] || 75;
+    let B = teamStrength[b.toLowerCase()] || 75;
+
+    if(A - B > 8) return a;
+    if(B - A > 8) return b;
+    return "Match nul probable";
+}
+
+// ------------------------------
+// 2. SYMBOLIC REASONING
+// ------------------------------
+function symbolicReasoning(a,b){
+    let scoreA = (teamStrength[a.toLowerCase()] || 75);
+    let scoreB = (teamStrength[b.toLowerCase()] || 75);
+
+    let diff = scoreA - scoreB;
+
+    if(diff > 5) return a + " (dominance structurelle)";
+    if(diff < -5) return b + " (dominance structurelle)";
+    return "équilibre symbolique des forces";
+}
+
+// ------------------------------
+// 3. CASE BASED REASONING
+// ------------------------------
+function cbr(a,b){
+    const cases = [
+        {a:90,b:85,res:"favori gagne"},
+        {a:80,b:80,res:"nul fréquent"},
+        {a:88,b:92,res:"surprise possible"}
+    ];
+
+    let A = teamStrength[a.toLowerCase()] || 75;
+    let B = teamStrength[b.toLowerCase()] || 75;
+
+    let best = cases[Math.floor(Math.random()*cases.length)];
+
+    return `Cas similaire trouvé → ${best.res}`;
+}
+
+// ------------------------------
+// 4. MACHINE LEARNING (simulation)
+// ------------------------------
+function mlModel(a,b){
+    let A = teamStrength[a.toLowerCase()] || 75;
+    let B = teamStrength[b.toLowerCase()] || 75;
+
+    let probA = A / (A + B);
+    let probB = B / (A + B);
+
+    return {
+        winner: probA > probB ? a : b,
+        pA: (probA*100).toFixed(1),
+        pB: (probB*100).toFixed(1)
+    };
+}
+
+// ------------------------------
+// 5. NEURAL NETWORK (simulation pondérée)
+// ------------------------------
+function neuralNet(a,b){
+    let A = teamStrength[a.toLowerCase()] || 75;
+    let B = teamStrength[b.toLowerCase()] || 75;
+
+    let noise = (Math.random()*6)-3;
+
+    let score = (A - B) + noise;
+
+    if(score > 2) return a;
+    if(score < -2) return b;
+    return "Match très serré";
+}
+
+// ------------------------------
+// FUSION TYPE "LLM ENSEMBLE"
+// ------------------------------
+function predict(){
+    let a = document.getElementById("teamA").value;
+    let b = document.getElementById("teamB").value;
+
+    if(!a || !b){
+        document.getElementById("output").innerHTML = "⚠️ Entrez deux équipes.";
+        return;
+    }
+
+    let expert = expertSystem(a,b);
+    let symbolic = symbolicReasoning(a,b);
+    let cbrRes = cbr(a,b);
+    let ml = mlModel(a,b);
+    let nn = neuralNet(a,b);
+
+    let votes = {};
+
+    [expert, ml.winner, nn].forEach(v=>{
+        if(v && typeof v === "string"){
+            votes[v] = (votes[v] || 0) + 1;
+        }
+    });
+
+    let final = Object.keys(votes).sort((x,y)=>votes[y]-votes[x])[0] || ml.winner;
+
+    document.getElementById("output").innerHTML = `
+        <b>🔮 Prédiction finale IA :</b> ${final}<br><br>
+        <b>Expert :</b> ${expert}<br>
+        <b>Symbolique :</b> ${symbolic}<br>
+        <b>CBR :</b> ${cbrRes}<br>
+        <b>ML :</b> ${ml.winner} (${ml.pA}% / ${ml.pB}%)<br>
+        <b>Réseau de neurones :</b> ${nn}
+    `;
+}
+
+// ------------------------------
+// PANELS EXPLICATIFS
+// ------------------------------
+function toggle(type){
+    const panel = document.getElementById("panel");
+
+    const texts = {
+        expert: "Système Expert : règles IF/THEN basées sur la force des équipes.",
+        symbolic: "Raisonnement symbolique : comparaison structurelle des attributs.",
+        cbr: "Case-Based Reasoning : recherche de matchs similaires passés.",
+        ml: "Machine Learning : modèle probabiliste basé sur ratios de force.",
+        nn: "Réseau de neurones : pondération + bruit pour simuler non-linéarité."
+    };
+
+    panel.innerHTML = texts[type];
+}
+
+</script>
+
+</body>
+</html>
